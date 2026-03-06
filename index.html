@@ -1,488 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SHAH·RAM — AI Automation Agency</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TITANBOT — AI Automation Agency Switzerland</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --black: #050810;
-    --white: #f0f4ff;
-    --accent: #00e5ff;
-    --accent2: #7b2fff;
-    --glass: rgba(255,255,255,0.04);
-    --border: rgba(0,229,255,0.15);
-  }
+:root{--black:#050810;--white:#f0f4ff;--accent:#00e5ff;--accent2:#7b2fff;--border:rgba(0,229,255,0.15);}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
+.cursor{width:12px;height:12px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:screen;}
+.cursor-follower{width:36px;height:36px;border:1px solid rgba(0,229,255,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all 0.12s ease;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,229,255,0.08);background:rgba(5,8,16,0.8);}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:3px;color:var(--accent);}
+.nav-links{display:flex;gap:32px;}
+.nav-links a{color:rgba(240,244,255,0.5);text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:color 0.3s;}
+.nav-links a:hover{color:var(--accent);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.lang-btns{display:flex;gap:4px;}
+.lang-btn{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.4);padding:4px 10px;font-size:11px;cursor:pointer;border-radius:4px;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.lang-btn.active{background:rgba(0,229,255,0.15);border-color:var(--accent);color:var(--accent);}
+.nav-cta{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:8px 20px;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all 0.3s;font-family:'DM Sans',sans-serif;text-transform:uppercase;}
+.nav-cta:hover{background:var(--accent);color:var(--black);}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 60px 60px;position:relative;overflow:hidden;}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:0.5;}
+.hero-content{position:relative;z-index:2;max-width:55%;}
+.hero-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:24px;opacity:0.7;}
+.hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(48px,6vw,88px);line-height:0.95;margin-bottom:24px;}
+.hero-title .accent{color:var(--accent);}
+.hero-title .dim{color:rgba(240,244,255,0.2);}
+.hero-sub{font-size:16px;color:rgba(240,244,255,0.55);line-height:1.7;max-width:480px;margin-bottom:40px;}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--white);border:none;padding:16px 32px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+.btn-primary:hover{opacity:0.85;transform:translateY(-2px);}
+.btn-secondary{background:transparent;border:1px solid rgba(240,244,255,0.2);color:rgba(240,244,255,0.7);padding:16px 32px;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.3s;}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+.hero-stats{display:flex;gap:48px;margin-top:60px;}
+.stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:var(--accent);}
+.stat-label{font-size:11px;letter-spacing:2px;color:rgba(240,244,255,0.3);text-transform:uppercase;}
+.hero-orb{position:absolute;right:5%;top:50%;transform:translateY(-50%);width:380px;height:380px;pointer-events:none;z-index:1;}
+@keyframes floatOrb{0%,100%{transform:translateY(-50%) translateY(0);}50%{transform:translateY(-50%) translateY(-20px);}}
+.hero-orb{animation:floatOrb 7s ease-in-out infinite;}
+@keyframes rotateRing{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.ring1{animation:rotateRing 12s linear infinite;transform-origin:50% 50%;}
+.ring2{animation:rotateRing 18s linear infinite reverse;transform-origin:50% 50%;}
+section{padding:100px 60px;}
+.section-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;opacity:0.7;}
+.section-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(36px,4vw,56px);line-height:1;margin-bottom:60px;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.service-card{background:var(--black);padding:40px 32px;border:1px solid transparent;transition:all 0.3s;position:relative;overflow:hidden;}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,0.03),transparent);opacity:0;transition:opacity 0.3s;}
+.service-card:hover{border-color:var(--accent);transform:translateY(-4px);background:#070d18;}
+.service-card:hover::before{opacity:1;}
+.service-num{font-size:11px;letter-spacing:3px;color:rgba(240,244,255,0.2);font-family:'Syne',sans-serif;}
+.service-icon{font-size:32px;display:block;margin:12px 0;}
+.service-title{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:12px;}
+.service-desc{font-size:14px;color:rgba(240,244,255,0.5);line-height:1.7;margin-bottom:16px;}
+.tags{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(0,229,255,0.2);color:rgba(0,229,255,0.6);padding:4px 10px;}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative;}
+.process-grid::before{content:'';position:absolute;top:40px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0.3;}
+.step{text-align:center;padding:32px 16px;}
+.step-num{font-family:'Syne',sans-serif;font-weight:800;font-size:48px;color:rgba(0,229,255,0.15);line-height:1;}
+.step-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;margin:8px 0;}
+.step-desc{font-size:13px;color:rgba(240,244,255,0.4);line-height:1.6;}
+.usecases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.usecase{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);padding:32px;transition:all 0.3s;}
+.usecase:hover{border-color:var(--accent);background:rgba(0,229,255,0.03);}
+.usecase-emoji{font-size:40px;display:block;margin-bottom:16px;}
+.usecase-title{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:12px;}
+.usecase-desc{font-size:14px;color:rgba(240,244,255,0.5);line-height:1.6;margin-bottom:20px;}
+.usecase-feat{font-size:12px;color:rgba(0,229,255,0.7);padding:4px 0;border-bottom:1px solid rgba(0,229,255,0.08);}
+.contact-section{background:rgba(255,255,255,0.01);border-top:1px solid var(--border);}
+.contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.contact-info h3{font-family:'Syne',sans-serif;font-weight:700;font-size:24px;margin-bottom:16px;}
+.contact-info p{color:rgba(240,244,255,0.5);font-size:14px;line-height:1.7;margin-bottom:32px;}
+.contact-detail{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px;}
+.form{display:flex;flex-direction:column;gap:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(240,244,255,0.4);display:block;margin-bottom:6px;}
+.form-input,.form-select,.form-textarea{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:var(--white);padding:14px 16px;font-size:14px;font-family:'DM Sans',sans-serif;width:100%;outline:none;transition:border-color 0.3s;cursor:text;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);}
+.form-select option{background:#0a0f1e;}
+.form-textarea{min-height:120px;resize:vertical;}
+.form-submit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--white);border:none;padding:16px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;width:100%;}
+.form-submit:hover{opacity:0.85;}
+.success-box{display:none;text-align:center;padding:60px 40px;border:1px solid rgba(0,229,255,0.3);background:rgba(0,229,255,0.03);}
+footer{padding:60px;text-align:center;border-top:1px solid var(--border);}
+.footer-email a{color:var(--accent);text-decoration:none;font-size:15px;}
+.footer-copy{font-size:12px;color:rgba(240,244,255,0.2);margin-top:16px;}
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.7s ease;}
+.reveal.visible{opacity:1;transform:none;}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* CHATBOT */
+.chat-bubble{position:fixed;bottom:28px;right:28px;z-index:1000;width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 20px rgba(0,229,255,0.4);font-size:24px;transition:all 0.3s;}
+.chat-bubble:hover{transform:scale(1.1);}
+.chat-window{position:fixed;bottom:100px;right:28px;z-index:1000;width:360px;max-height:500px;background:#0a0f1e;border:1px solid var(--accent);display:none;flex-direction:column;box-shadow:0 0 40px rgba(0,229,255,0.15);}
+.chat-window.open{display:flex;}
+.chat-header{padding:16px 20px;background:linear-gradient(135deg,rgba(0,229,255,0.1),rgba(123,47,255,0.1));border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.chat-header-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--accent);}
+.chat-close{background:none;border:none;color:rgba(240,244,255,0.5);cursor:pointer;font-size:18px;}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;max-height:320px;}
+.msg{max-width:85%;padding:10px 14px;font-size:13px;line-height:1.5;}
+.msg.bot{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.15);align-self:flex-start;border-radius:0 12px 12px 12px;}
+.msg.user{background:rgba(123,47,255,0.2);border:1px solid rgba(123,47,255,0.3);align-self:flex-end;border-radius:12px 12px 0 12px;}
+.chat-input-area{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);}
+.chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);padding:10px 14px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;cursor:text;}
+.chat-input:focus{border-color:var(--accent);}
+.chat-send{background:var(--accent);border:none;color:var(--black);padding:10px 16px;cursor:pointer;font-weight:700;font-size:14px;transition:opacity 0.2s;}
+.chat-send:hover{opacity:0.8;}
+.typing{display:flex;gap:4px;align-items:center;padding:8px 14px;}
+.typing span{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:typingDot 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:0.2s;}
+.typing span:nth-child(3){animation-delay:0.4s;}
+@keyframes typingDot{0%,100%{opacity:0.3;transform:scale(1);}50%{opacity:1;transform:scale(1.3);}}
 
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* Custom cursor */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--accent);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: screen;
-  }
-  .cursor-follower {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(0,229,255,0.4);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.12s ease;
-  }
-
-  /* Nav */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 24px 60px;
-    display: flex; justify-content: space-between; align-items: center;
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0,229,255,0.08);
-    background: rgba(5,8,16,0.7);
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 20px;
-    letter-spacing: 3px;
-    color: var(--accent);
-  }
-  .nav-links { display: flex; gap: 40px; }
-  .nav-links a {
-    color: rgba(240,244,255,0.5);
-    text-decoration: none; font-size: 13px;
-    letter-spacing: 1px; text-transform: uppercase;
-    transition: color 0.3s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-  .nav-cta {
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 10px 24px;
-    font-size: 13px; letter-spacing: 1px;
-    cursor: none;
-    transition: all 0.3s;
-    font-family: 'DM Sans', sans-serif;
-    text-transform: uppercase;
-  }
-  .nav-cta:hover { background: var(--accent); color: var(--black); }
-
-  /* Hero */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    justify-content: center;
-    padding: 120px 60px 60px;
-    position: relative; overflow: hidden;
-  }
-
-  .hero-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
-  }
-
-  .hero-orb {
-    position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(123,47,255,0.2) 0%, transparent 70%);
-    right: -100px; top: 50%;
-    transform: translateY(-50%);
-    animation: pulse-orb 4s ease-in-out infinite;
-  }
-  .hero-orb2 {
-    position: absolute;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(0,229,255,0.12) 0%, transparent 70%);
-    left: 200px; bottom: -100px;
-    animation: pulse-orb 6s ease-in-out infinite reverse;
-  }
-
-  @keyframes pulse-orb {
-    0%,100% { opacity: 0.6; transform: translateY(-50%) scale(1); }
-    50% { opacity: 1; transform: translateY(-50%) scale(1.05); }
-  }
-
-  .hero-label {
-    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 24px;
-    display: flex; align-items: center; gap: 12px;
-    animation: fadeUp 0.8s ease both;
-  }
-  .hero-label::before {
-    content: ''; width: 40px; height: 1px;
-    background: var(--accent);
-  }
-
-  .hero-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(48px, 8vw, 110px);
-    font-weight: 800; line-height: 0.9;
-    letter-spacing: -3px;
-    max-width: 800px;
-    animation: fadeUp 0.8s 0.1s ease both;
-  }
-  .hero-title .accent { color: var(--accent); }
-  .hero-title .dim { color: rgba(240,244,255,0.2); }
-
-  .hero-sub {
-    margin-top: 32px;
-    font-size: 18px; font-weight: 300;
-    color: rgba(240,244,255,0.5);
-    max-width: 500px; line-height: 1.6;
-    animation: fadeUp 0.8s 0.2s ease both;
-  }
-
-  .hero-actions {
-    margin-top: 48px; display: flex; gap: 16px; align-items: center;
-    animation: fadeUp 0.8s 0.3s ease both;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: var(--black);
-    padding: 16px 36px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700; font-size: 14px;
-    letter-spacing: 1px; text-transform: uppercase;
-    border: none; cursor: none;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s;
-    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-  }
-  .btn-primary:hover { background: var(--white); transform: translateY(-2px); }
-  .btn-secondary {
-    color: rgba(240,244,255,0.5);
-    font-size: 13px; letter-spacing: 1px;
-    text-decoration: none;
-    display: flex; align-items: center; gap: 8px;
-    transition: color 0.3s;
-  }
-  .btn-secondary:hover { color: var(--white); }
-  .btn-secondary::after { content: '→'; transition: transform 0.3s; }
-  .btn-secondary:hover::after { transform: translateX(4px); }
-
-  .hero-stats {
-    position: absolute; bottom: 60px; right: 60px;
-    display: flex; gap: 48px;
-    animation: fadeUp 0.8s 0.4s ease both;
-  }
-  .stat { text-align: right; }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 36px; font-weight: 800;
-    color: var(--accent);
-  }
-  .stat-label {
-    font-size: 11px; letter-spacing: 2px;
-    color: rgba(240,244,255,0.3);
-    text-transform: uppercase;
-  }
-
-  /* Ticker */
-  .ticker {
-    background: rgba(0,229,255,0.05);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 0; overflow: hidden;
-  }
-  .ticker-inner {
-    display: flex; gap: 80px; white-space: nowrap;
-    animation: ticker 20s linear infinite;
-  }
-  .ticker-item {
-    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
-    color: rgba(240,244,255,0.3);
-    display: flex; align-items: center; gap: 16px;
-  }
-  .ticker-item .dot {
-    width: 4px; height: 4px; background: var(--accent);
-    border-radius: 50%; flex-shrink: 0;
-  }
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* Section base */
-  section { padding: 120px 60px; }
-  .section-label {
-    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 16px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .section-label::before { content: '//'; color: rgba(0,229,255,0.4); }
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 800; letter-spacing: -2px;
-    line-height: 1;
-  }
-
-  /* Services */
-  .services { background: rgba(255,255,255,0.01); }
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2px; margin-top: 64px;
-  }
-  .service-card {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    padding: 48px 40px;
-    position: relative; overflow: hidden;
-    transition: all 0.4s;
-    cursor: none;
-  }
-  .service-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.4s;
-  }
-  .service-card:hover { background: rgba(0,229,255,0.04); transform: translateY(-4px); }
-  .service-card:hover::before { transform: scaleX(1); }
-  .service-icon {
-    font-size: 32px; margin-bottom: 24px;
-    display: block;
-  }
-  .service-num {
-    position: absolute; top: 40px; right: 40px;
-    font-family: 'Syne', sans-serif;
-    font-size: 48px; font-weight: 800;
-    color: rgba(255,255,255,0.03);
-  }
-  .service-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px; font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .service-desc {
-    font-size: 14px; line-height: 1.7;
-    color: rgba(240,244,255,0.45);
-  }
-  .service-tags {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-top: 24px;
-  }
-  .tag {
-    font-size: 10px; letter-spacing: 1px;
-    text-transform: uppercase;
-    border: 1px solid rgba(0,229,255,0.2);
-    color: rgba(0,229,255,0.6);
-    padding: 4px 10px;
-  }
-
-  /* How it works */
-  .process { position: relative; }
-  .process-steps {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0; margin-top: 80px; position: relative;
-  }
-  .process-steps::before {
-    content: '';
-    position: absolute; top: 32px; left: 12.5%; right: 12.5%;
-    height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-  .step { padding: 0 24px; text-align: center; }
-  .step-num {
-    width: 64px; height: 64px;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-size: 20px; font-weight: 800;
-    color: var(--accent);
-    margin: 0 auto 32px;
-    background: var(--black);
-    position: relative; z-index: 1;
-  }
-  .step-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 18px; font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .step-desc {
-    font-size: 13px; color: rgba(240,244,255,0.4);
-    line-height: 1.7;
-  }
-
-  /* Use cases */
-  .usecases-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 2px; margin-top: 64px;
-  }
-  .usecase {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    padding: 40px;
-    transition: all 0.3s;
-    cursor: none;
-    position: relative; overflow: hidden;
-  }
-  .usecase:hover { background: rgba(123,47,255,0.06); border-color: rgba(123,47,255,0.3); }
-  .usecase-emoji { font-size: 40px; margin-bottom: 20px; display: block; }
-  .usecase-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px; font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .usecase-desc {
-    font-size: 13px; color: rgba(240,244,255,0.4);
-    line-height: 1.7;
-  }
-  .usecase-features {
-    margin-top: 20px; display: flex; flex-direction: column; gap: 8px;
-  }
-  .usecase-feature {
-    font-size: 12px; color: rgba(240,244,255,0.5);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .usecase-feature::before {
-    content: '→'; color: var(--accent); font-size: 11px;
-  }
-
-  /* Contact / Form */
-  .contact {
-    background: linear-gradient(180deg, var(--black), rgba(123,47,255,0.05));
-  }
-  .contact-inner {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-    margin-top: 64px;
-  }
-  .contact-info h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 28px; font-weight: 700;
-    margin-bottom: 16px;
-  }
-  .contact-info p {
-    font-size: 15px; color: rgba(240,244,255,0.4);
-    line-height: 1.8; margin-bottom: 32px;
-  }
-  .contact-detail {
-    display: flex; align-items: center; gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 14px;
-  }
-  .contact-detail-icon { color: var(--accent); font-size: 18px; width: 24px; }
-
-  /* Form */
-  .form { display: flex; flex-direction: column; gap: 16px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .form-group { display: flex; flex-direction: column; gap: 8px; }
-  .form-label {
-    font-size: 11px; letter-spacing: 2px;
-    text-transform: uppercase; color: rgba(240,244,255,0.4);
-  }
-  .form-input, .form-select, .form-textarea {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--white);
-    padding: 14px 18px;
-    font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
-    transition: border-color 0.3s;
-    outline: none;
-    cursor: none;
-    width: 100%;
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus {
-    border-color: var(--accent);
-    background: rgba(0,229,255,0.03);
-  }
-  .form-select option { background: #0a0f1e; }
-  .form-textarea { resize: vertical; min-height: 120px; }
-  .form-submit {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: var(--white);
-    border: none; padding: 18px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700; font-size: 14px;
-    letter-spacing: 2px; text-transform: uppercase;
-    cursor: none;
-    transition: all 0.3s;
-    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-  }
-  .form-submit:hover { opacity: 0.85; transform: translateY(-2px); }
-
-  /* Success */
-  .form-success {
-    display: none;
-    text-align: center; padding: 48px;
-    background: rgba(0,229,255,0.05);
-    border: 1px solid var(--accent);
-  }
-  .form-success h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 28px; color: var(--accent);
-    margin-bottom: 12px;
-  }
-
-  /* Footer */
-  footer {
-    padding: 40px 60px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .footer-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 18px;
-    letter-spacing: 3px; color: var(--accent);
-  }
-  .footer-copy {
-    font-size: 12px; color: rgba(240,244,255,0.2);
-    letter-spacing: 1px;
-  }
-  .footer-swiss {
-    font-size: 12px; color: rgba(240,244,255,0.2);
-    letter-spacing: 1px;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Scroll reveal */
-  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
-  .reveal.visible { opacity: 1; transform: none; }
-
-  @media (max-width: 768px) {
-    nav { padding: 20px 24px; }
-    .nav-links { display: none; }
-    section { padding: 80px 24px; }
-    .hero { padding: 100px 24px 60px; }
-    .hero-stats { display: none; }
-    .process-steps { grid-template-columns: 1fr 1fr; }
-    .process-steps::before { display: none; }
-    .usecases-grid { grid-template-columns: 1fr; }
-    .contact-inner { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 16px; text-align: center; }
-  }
+@media(max-width:768px){
+  nav{padding:16px 24px;}.nav-links{display:none;}
+  .hero{padding:100px 24px 60px;}.hero-content{max-width:100%;}
+  .hero-orb{display:none;}.hero-stats{gap:24px;}
+  section{padding:60px 24px;}
+  .services-grid,.usecases-grid,.process-grid{grid-template-columns:1fr;}
+  .contact-inner{grid-template-columns:1fr;gap:40px;}
+  .form-row{grid-template-columns:1fr;}
+  .chat-window{width:calc(100vw - 40px);right:20px;}
+}
 </style>
 </head>
 <body>
@@ -492,368 +135,610 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">SHAH·RAM</div>
+  <div class="nav-logo">TITANBOT</div>
   <div class="nav-links">
-    <a href="#services">Services</a>
-    <a href="#process">Process</a>
-    <a href="#usecases">Use Cases</a>
-    <a href="#contact">Contact</a>
+    <a href="#services" data-t="nav_services">Services</a>
+    <a href="#process" data-t="nav_process">Process</a>
+    <a href="#usecases" data-t="nav_usecases">Use Cases</a>
+    <a href="#contact" data-t="nav_contact">Contact</a>
   </div>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+  <div class="nav-right">
+    <div class="lang-btns">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('de')">DE</button>
+      <button class="lang-btn" onclick="setLang('fa')">فا</button>
+    </div>
+    <button class="nav-cta" data-t="nav_cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+  </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-orb"></div>
-  <div class="hero-orb2"></div>
+<section class="hero" id="home">
+  <canvas id="heroCanvas"></canvas>
 
-  <div class="hero-label">AI Automation Agency — Switzerland</div>
-  <h1 class="hero-title">
-    YOUR BUSINESS.<br>
-    <span class="accent">AUTOMATED.</span><br>
-    <span class="dim">SOLD.</span>
-  </h1>
-  <p class="hero-sub">We build custom AI assistants and automation systems for clinics, salons, and businesses. You focus on your work — we handle the rest.</p>
-
-  <div class="hero-actions">
-    <a href="#contact" class="btn-primary">Start Your Project</a>
-    <a href="#services" class="btn-secondary">See What We Build</a>
+  <!-- 3D AI Orb -->
+  <div class="hero-orb">
+    <svg viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+      <defs>
+        <radialGradient id="g1" cx="38%" cy="32%">
+          <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.95"/>
+          <stop offset="45%" stop-color="#7b2fff" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#050810" stop-opacity="0.95"/>
+        </radialGradient>
+        <radialGradient id="g2" cx="50%" cy="50%">
+          <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="softglow"><feGaussianBlur stdDeviation="12"/></filter>
+      </defs>
+      <!-- Glow bg -->
+      <circle cx="190" cy="190" r="160" fill="#00e5ff" opacity="0.04" filter="url(#softglow)"/>
+      <!-- Outer rings -->
+      <circle cx="190" cy="190" r="175" fill="none" stroke="rgba(0,229,255,0.08)" stroke-width="1"/>
+      <circle cx="190" cy="190" r="158" fill="none" stroke="rgba(0,229,255,0.05)" stroke-width="0.5"/>
+      <!-- Main sphere -->
+      <circle cx="190" cy="190" r="140" fill="url(#g1)"/>
+      <circle cx="190" cy="190" r="140" fill="url(#g2)"/>
+      <!-- Shine -->
+      <ellipse cx="155" cy="140" rx="50" ry="30" fill="rgba(255,255,255,0.1)" transform="rotate(-25,155,140)"/>
+      <!-- Grid lines on sphere -->
+      <g stroke="rgba(0,229,255,0.3)" stroke-width="0.7" fill="none">
+        <path d="M90,190 Q140,160 190,190 Q240,220 290,190"/>
+        <path d="M90,155 Q140,130 190,155 Q240,180 290,155"/>
+        <path d="M90,225 Q140,200 190,225 Q240,250 290,225"/>
+        <path d="M190,80 Q215,140 190,190 Q165,240 190,300"/>
+        <path d="M155,85 Q175,145 165,195 Q155,240 145,295"/>
+        <path d="M225,85 Q215,145 215,195 Q225,240 235,295"/>
+      </g>
+      <!-- Nodes -->
+      <g fill="#00e5ff" filter="url(#glow)">
+        <circle cx="190" cy="80" r="4"/><circle cx="290" cy="190" r="4"/>
+        <circle cx="190" cy="300" r="4"/><circle cx="90" cy="190" r="4"/>
+        <circle cx="248" cy="112" r="3"/><circle cx="132" cy="112" r="3"/>
+        <circle cx="248" cy="268" r="3"/><circle cx="132" cy="268" r="3"/>
+      </g>
+      <!-- Connection lines to nodes -->
+      <g stroke="rgba(0,229,255,0.5)" stroke-width="0.6" fill="none">
+        <line x1="190" y1="80" x2="248" y2="112"/><line x1="248" y1="112" x2="290" y2="190"/>
+        <line x1="290" y1="190" x2="248" y2="268"/><line x1="248" y1="268" x2="190" y2="300"/>
+        <line x1="190" y1="300" x2="132" y2="268"/><line x1="132" y1="268" x2="90" y2="190"/>
+        <line x1="90" y1="190" x2="132" y2="112"/><line x1="132" y1="112" x2="190" y2="80"/>
+      </g>
+      <!-- Rotating ring 1 -->
+      <g class="ring1">
+        <ellipse cx="190" cy="190" rx="172" ry="48" fill="none" stroke="rgba(0,229,255,0.25)" stroke-width="1.2" stroke-dasharray="10 5" transform="rotate(-25,190,190)"/>
+      </g>
+      <!-- Rotating ring 2 -->
+      <g class="ring2">
+        <ellipse cx="190" cy="190" rx="172" ry="48" fill="none" stroke="rgba(123,47,255,0.2)" stroke-width="0.8" stroke-dasharray="5 10" transform="rotate(45,190,190)"/>
+      </g>
+      <!-- AI label -->
+      <text x="190" y="202" text-anchor="middle" font-family="Syne,sans-serif" font-size="34" font-weight="800" fill="rgba(240,244,255,0.9)" filter="url(#glow)">AI</text>
+    </svg>
   </div>
 
-  <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-num">24h</div>
-      <div class="stat-label">Response Time</div>
+  <div class="hero-content">
+    <div class="hero-label" data-t="hero_label">AI Automation Agency — Switzerland</div>
+    <h1 class="hero-title">
+      <span data-t="hero_line1">YOUR BUSINESS.</span><br>
+      <span class="accent" data-t="hero_line2">AUTOMATED.</span><br>
+      <span class="dim" data-t="hero_line3">SOLD.</span>
+    </h1>
+    <p class="hero-sub" data-t="hero_sub">We build custom AI assistants and automation systems for clinics, salons, and businesses across Switzerland.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary" data-t="hero_btn1">Start Your Project</a>
+      <a href="#services" class="btn-secondary" data-t="hero_btn2">See What We Build</a>
     </div>
-    <div class="stat">
-      <div class="stat-num">100%</div>
-      <div class="stat-label">Done For You</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">n8n</div>
-      <div class="stat-label">Powered By</div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">24h</div><div class="stat-label" data-t="stat1">Response Time</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label" data-t="stat2">Done For You</div></div>
+      <div class="stat"><div class="stat-num">n8n</div><div class="stat-label" data-t="stat3">Powered By</div></div>
     </div>
   </div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner" id="ticker">
-    <span class="ticker-item"><span class="dot"></span>AI Booking Systems</span>
-    <span class="ticker-item"><span class="dot"></span>Telegram Automation</span>
-    <span class="ticker-item"><span class="dot"></span>Customer Service Bots</span>
-    <span class="ticker-item"><span class="dot"></span>Email Automation</span>
-    <span class="ticker-item"><span class="dot"></span>Task Management AI</span>
-    <span class="ticker-item"><span class="dot"></span>Smart Reminders</span>
-    <span class="ticker-item"><span class="dot"></span>AI Booking Systems</span>
-    <span class="ticker-item"><span class="dot"></span>Telegram Automation</span>
-    <span class="ticker-item"><span class="dot"></span>Customer Service Bots</span>
-    <span class="ticker-item"><span class="dot"></span>Email Automation</span>
-    <span class="ticker-item"><span class="dot"></span>Task Management AI</span>
-    <span class="ticker-item"><span class="dot"></span>Smart Reminders</span>
-  </div>
-</div>
-
 <!-- SERVICES -->
-<section class="services" id="services">
-  <div class="section-label">What We Build</div>
-  <h2 class="section-title reveal">SERVICES</h2>
-
+<section id="services">
+  <div class="section-label" data-t="sec_services_label">What We Build</div>
+  <h2 class="section-title reveal" data-t="sec_services_title">SERVICES</h2>
   <div class="services-grid">
+
     <div class="service-card reveal">
-      <span class="service-icon">🤖</span>
       <span class="service-num">01</span>
-      <div class="service-title">AI Assistant</div>
-      <p class="service-desc">A fully custom AI assistant for your business. Answers questions, books appointments, handles customers — automatically, 24/7.</p>
-      <div class="service-tags">
-        <span class="tag">ChatGPT</span>
-        <span class="tag">Claude</span>
-        <span class="tag">n8n</span>
-      </div>
+      <span class="service-icon">🤖</span>
+      <div class="service-title" data-t="s1_title">AI Assistant</div>
+      <p class="service-desc" data-t="s1_desc">A custom AI assistant that answers questions, books appointments and handles customers 24/7 automatically.</p>
+      <div class="tags"><span class="tag">ChatGPT</span><span class="tag">Claude</span><span class="tag">n8n</span></div>
     </div>
 
     <div class="service-card reveal">
-      <span class="service-icon">📅</span>
       <span class="service-num">02</span>
-      <div class="service-title">Smart Booking System</div>
-      <p class="service-desc">Customers book appointments online. AI checks availability, confirms automatically, sends reminders — zero manual work.</p>
-      <div class="service-tags">
-        <span class="tag">Google Calendar</span>
-        <span class="tag">Telegram</span>
-        <span class="tag">WhatsApp</span>
-      </div>
+      <span class="service-icon">📅</span>
+      <div class="service-title" data-t="s2_title">Smart Booking System</div>
+      <p class="service-desc" data-t="s2_desc">Customers book online. AI confirms automatically, sends reminders — zero manual work for you.</p>
+      <div class="tags"><span class="tag">Google Calendar</span><span class="tag">Telegram</span><span class="tag">WhatsApp</span></div>
     </div>
 
     <div class="service-card reveal">
-      <span class="service-icon">✈️</span>
       <span class="service-num">03</span>
-      <div class="service-title">Telegram / WhatsApp Bot</div>
-      <p class="service-desc">Your customers send a message — the bot handles everything. Questions, bookings, information, and follow-ups.</p>
-      <div class="service-tags">
-        <span class="tag">Bot API</span>
-        <span class="tag">AI Agent</span>
-        <span class="tag">Auto-reply</span>
-      </div>
+      <span class="service-icon">💬</span>
+      <div class="service-title" data-t="s3_title">Website Chatbot</div>
+      <p class="service-desc" data-t="s3_desc">Smart chatbot on your website that answers visitors, captures leads, and books appointments automatically.</p>
+      <div class="tags"><span class="tag">Live Chat</span><span class="tag">Lead Capture</span><span class="tag">Multilingual</span></div>
     </div>
 
     <div class="service-card reveal">
-      <span class="service-icon">📧</span>
       <span class="service-num">04</span>
-      <div class="service-title">Email Automation</div>
-      <p class="service-desc">AI reads, categorizes, and drafts replies to your emails. Never miss an important message. Save hours every week.</p>
-      <div class="service-tags">
-        <span class="tag">Gmail</span>
-        <span class="tag">Outlook</span>
-        <span class="tag">AI Copilot</span>
-      </div>
+      <span class="service-icon">✈️</span>
+      <div class="service-title" data-t="s4_title">Telegram / WhatsApp Bot</div>
+      <p class="service-desc" data-t="s4_desc">Your customers send a message — the bot handles everything. Questions, bookings, follow-ups.</p>
+      <div class="tags"><span class="tag">Bot API</span><span class="tag">AI Agent</span><span class="tag">Auto-reply</span></div>
     </div>
 
     <div class="service-card reveal">
-      <span class="service-icon">📊</span>
       <span class="service-num">05</span>
-      <div class="service-title">Task & CRM Automation</div>
-      <p class="service-desc">Every customer interaction becomes a tracked task. Automatic follow-ups, reminders, and status updates — all without manual input.</p>
-      <div class="service-tags">
-        <span class="tag">Airtable</span>
-        <span class="tag">Notion</span>
-        <span class="tag">Google Sheets</span>
-      </div>
-    </div>
-
-    <div class="service-card reveal" style="border-color: rgba(123,47,255,0.3); grid-column: span 1;">
-      <span class="service-icon">🌐</span>
-      <span class="service-num">07</span>
-      <div class="service-title">Professional Website Design</div>
-      <p class="service-desc">Need a stunning website for your business? We design and build modern, fast, and fully customized websites — from landing pages to full business sites. No templates. 100% unique.</p>
-      <div class="service-tags">
-        <span class="tag">Custom Design</span>
-        <span class="tag">Fast & Modern</span>
-        <span class="tag">Mobile Ready</span>
-        <span class="tag">SEO Ready</span>
-      </div>
+      <span class="service-icon">📱</span>
+      <div class="service-title" data-t="s5_title">Social Media AI Manager</div>
+      <p class="service-desc" data-t="s5_desc">AI creates, schedules and posts content for Instagram, Facebook and LinkedIn — automatically, 24/7.</p>
+      <div class="tags"><span class="tag">Instagram</span><span class="tag">Facebook</span><span class="tag">Auto-post</span></div>
     </div>
 
     <div class="service-card reveal">
-      <span class="service-icon">⚡</span>
       <span class="service-num">06</span>
-      <div class="service-title">Full Setup & Support</div>
-      <p class="service-desc">We build everything from scratch. You don't need to know anything technical. We set it up, test it, and support you ongoing.</p>
-      <div class="service-tags">
-        <span class="tag">Done-For-You</span>
-        <span class="tag">Training</span>
-        <span class="tag">Support</span>
-      </div>
+      <span class="service-icon">🧾</span>
+      <div class="service-title" data-t="s6_title">Auto Invoice & Payment</div>
+      <p class="service-desc" data-t="s6_desc">Automatically generate and send invoices after every booking. Track payments, send reminders.</p>
+      <div class="tags"><span class="tag">PDF Invoice</span><span class="tag">Auto-send</span><span class="tag">Tracking</span></div>
     </div>
+
+    <div class="service-card reveal">
+      <span class="service-num">07</span>
+      <span class="service-icon">📧</span>
+      <div class="service-title" data-t="s7_title">Email Automation</div>
+      <p class="service-desc" data-t="s7_desc">AI reads, sorts and drafts replies to your emails. Never miss a message. Save hours every week.</p>
+      <div class="tags"><span class="tag">Gmail</span><span class="tag">Outlook</span><span class="tag">AI Copilot</span></div>
+    </div>
+
+    <div class="service-card reveal">
+      <span class="service-num">08</span>
+      <span class="service-icon">📊</span>
+      <div class="service-title" data-t="s8_title">CRM Automation</div>
+      <p class="service-desc" data-t="s8_desc">Every customer interaction becomes a tracked task. Auto follow-ups, reminders, and status updates.</p>
+      <div class="tags"><span class="tag">Airtable</span><span class="tag">Notion</span><span class="tag">Sheets</span></div>
+    </div>
+
+    <div class="service-card reveal" style="border-color:rgba(123,47,255,0.4);background:rgba(123,47,255,0.03);">
+      <span class="service-num">09</span>
+      <span class="service-icon">🌐</span>
+      <div class="service-title" data-t="s9_title">Website Design</div>
+      <p class="service-desc" data-t="s9_desc">Custom websites built from scratch. Modern, fast, mobile-ready. No templates — 100% unique for your brand.</p>
+      <div class="tags"><span class="tag">Custom Design</span><span class="tag">Mobile Ready</span><span class="tag">SEO</span></div>
+    </div>
+
   </div>
 </section>
 
 <!-- PROCESS -->
-<section class="process" id="process">
-  <div class="section-label">How It Works</div>
-  <h2 class="section-title reveal">FROM IDEA<br>TO LIVE</h2>
-
-  <div class="process-steps">
+<section id="process" style="background:rgba(255,255,255,0.01);">
+  <div class="section-label" data-t="sec_process_label">How It Works</div>
+  <h2 class="section-title reveal" data-t="sec_process_title">FROM IDEA<br>TO LIVE</h2>
+  <div class="process-grid">
     <div class="step reveal">
       <div class="step-num">01</div>
-      <div class="step-title">Discovery</div>
-      <p class="step-desc">You tell us your business, your problems, and what you need. We listen and plan.</p>
+      <div class="step-title" data-t="p1_title">Discovery</div>
+      <p class="step-desc" data-t="p1_desc">We learn about your business, your problems, and your goals. Free consultation.</p>
     </div>
     <div class="step reveal">
       <div class="step-num">02</div>
-      <div class="step-title">Design</div>
-      <p class="step-desc">We design the full automation workflow. You approve before we build anything.</p>
+      <div class="step-title" data-t="p2_title">Design</div>
+      <p class="step-desc" data-t="p2_desc">We map out the full automation workflow and show you exactly what we'll build.</p>
     </div>
     <div class="step reveal">
       <div class="step-num">03</div>
-      <div class="step-title">Build</div>
-      <p class="step-desc">We build and test your AI system. Full setup in n8n — no code needed from you.</p>
+      <div class="step-title" data-t="p3_title">Build</div>
+      <p class="step-desc" data-t="p3_desc">We implement everything in n8n. You see progress every step of the way.</p>
     </div>
     <div class="step reveal">
       <div class="step-num">04</div>
-      <div class="step-title">Launch</div>
-      <p class="step-desc">Your system goes live. We train you, support you, and refine as needed.</p>
+      <div class="step-title" data-t="p4_title">Launch</div>
+      <p class="step-desc" data-t="p4_desc">We deploy, train you, and support you ongoing. You're never alone.</p>
     </div>
   </div>
 </section>
 
 <!-- USE CASES -->
 <section id="usecases">
-  <div class="section-label">Who We Work With</div>
-  <h2 class="section-title reveal">USE CASES</h2>
-
+  <div class="section-label" data-t="sec_uc_label">Who We Work With</div>
+  <h2 class="section-title reveal" data-t="sec_uc_title">USE CASES</h2>
   <div class="usecases-grid">
     <div class="usecase reveal">
       <span class="usecase-emoji">🦷</span>
-      <div class="usecase-title">Dental Clinic</div>
-      <p class="usecase-desc">Automate appointments, reminders, and patient communication.</p>
-      <div class="usecase-features">
-        <div class="usecase-feature">Online booking via Telegram/Web</div>
-        <div class="usecase-feature">Automatic appointment reminders</div>
-        <div class="usecase-feature">Patient FAQ bot</div>
-        <div class="usecase-feature">Calendar sync</div>
-      </div>
+      <div class="usecase-title" data-t="uc1_title">Dental Clinic</div>
+      <p class="usecase-desc" data-t="uc1_desc">Automate appointments, reminders, and patient communication.</p>
+      <div class="usecase-feat" data-t="uc1_f1">Online booking 24/7</div>
+      <div class="usecase-feat" data-t="uc1_f2">Automatic reminders</div>
+      <div class="usecase-feat" data-t="uc1_f3">Patient follow-ups</div>
+      <div class="usecase-feat" data-t="uc1_f4">Multilingual support</div>
     </div>
-
     <div class="usecase reveal">
       <span class="usecase-emoji">✂️</span>
-      <div class="usecase-title">Hair Salon</div>
-      <p class="usecase-desc">Let customers book 24/7 — even when you're busy cutting hair.</p>
-      <div class="usecase-features">
-        <div class="usecase-feature">Service menu with prices</div>
-        <div class="usecase-feature">Stylist selection</div>
-        <div class="usecase-feature">Automated confirmations</div>
-        <div class="usecase-feature">No-show reminders</div>
-      </div>
+      <div class="usecase-title" data-t="uc2_title">Hair Salon</div>
+      <p class="usecase-desc" data-t="uc2_desc">Let customers book 24/7 — even when you're busy with clients.</p>
+      <div class="usecase-feat" data-t="uc2_f1">Service menu booking</div>
+      <div class="usecase-feat" data-t="uc2_f2">Stylist selection</div>
+      <div class="usecase-feat" data-t="uc2_f3">No-show prevention</div>
+      <div class="usecase-feat" data-t="uc2_f4">Auto confirmations</div>
     </div>
-
     <div class="usecase reveal">
       <span class="usecase-emoji">🏥</span>
-      <div class="usecase-title">Small Clinic</div>
-      <p class="usecase-desc">Streamline patient intake, scheduling, and follow-ups automatically.</p>
-      <div class="usecase-features">
-        <div class="usecase-feature">Intake form automation</div>
-        <div class="usecase-feature">Doctor scheduling</div>
-        <div class="usecase-feature">Follow-up messages</div>
-        <div class="usecase-feature">Multilingual support</div>
-      </div>
+      <div class="usecase-title" data-t="uc3_title">Small Clinic</div>
+      <p class="usecase-desc" data-t="uc3_desc">Streamline patient intake, scheduling and follow-ups automatically.</p>
+      <div class="usecase-feat" data-t="uc3_f1">Intake form automation</div>
+      <div class="usecase-feat" data-t="uc3_f2">Doctor scheduling</div>
+      <div class="usecase-feat" data-t="uc3_f3">Follow-up messages</div>
+      <div class="usecase-feat" data-t="uc3_f4">Invoice automation</div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="contact" id="contact">
-  <div class="section-label">Start Your Project</div>
-  <h2 class="section-title reveal">LET'S BUILD<br>YOUR AI</h2>
-
+<section class="contact-section" id="contact">
+  <div class="section-label" data-t="sec_contact_label">Start Your Project</div>
+  <h2 class="section-title reveal">LET'S BUILD<br><span style="color:var(--accent)">YOUR AI</span></h2>
   <div class="contact-inner">
     <div class="contact-info reveal">
-      <h3>Tell us what you need.</h3>
-      <p>Fill in the form and we will get back to you within 24 hours with a plan tailored to your business. No technical knowledge required from you.</p>
-
-      <div class="contact-detail">
-        <span class="contact-detail-icon">📍</span>
-        <span>Switzerland — Remote Worldwide</span>
-      </div>
-      <div class="contact-detail">
-        <span class="contact-detail-icon">⚡</span>
-        <span>Response within 24 hours</span>
-      </div>
-      <div class="contact-detail">
-        <span class="contact-detail-icon">🛠</span>
-        <span>100% Done-For-You Setup</span>
-      </div>
-      <div class="contact-detail">
-        <span class="contact-detail-icon">🔒</span>
-        <span>Your data stays private</span>
-      </div>
+      <h3 data-t="contact_h3">Tell us what you need.</h3>
+      <p data-t="contact_p">Fill in the form and we will get back to you within 24 hours with a plan tailored to your business. No technical knowledge required.</p>
+      <div class="contact-detail"><span style="color:var(--accent)">📍</span><span data-t="cd1">Switzerland — Remote Worldwide</span></div>
+      <div class="contact-detail"><span style="color:var(--accent)">⚡</span><span data-t="cd2">Response within 24 hours</span></div>
+      <div class="contact-detail"><span style="color:var(--accent)">🛠</span><span data-t="cd3">100% Done-For-You Setup</span></div>
+      <div class="contact-detail"><span style="color:var(--accent)">✉️</span><a href="mailto:shahramqurbani529@gmail.com" style="color:var(--white);text-decoration:none;">shahramqurbani529@gmail.com</a></div>
     </div>
-
     <div class="reveal">
       <form class="form" id="contactForm" onsubmit="submitForm(event)">
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Your Name</label>
-            <input class="form-input" type="text" placeholder="Full name" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Business Name</label>
-            <input class="form-input" type="text" placeholder="Your business" required />
-          </div>
+          <div><label class="form-label" data-t="f_name">Your Name</label><input class="form-input" type="text" placeholder="Full name" required/></div>
+          <div><label class="form-label" data-t="f_biz">Business Name</label><input class="form-input" type="text" placeholder="Your business" required/></div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Email / Telegram</label>
-          <input class="form-input" type="text" placeholder="your@email.com or @username" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Business Type</label>
+        <div><label class="form-label" data-t="f_contact">Email / Telegram</label><input class="form-input" type="text" placeholder="your@email.com or @username" required/></div>
+        <div>
+          <label class="form-label" data-t="f_type">Business Type</label>
           <select class="form-select" required>
-            <option value="" disabled selected>Select your industry</option>
-            <option>Dental Clinic</option>
-            <option>Hair Salon / Barbershop</option>
-            <option>Medical Clinic</option>
-            <option>Beauty / Spa</option>
-            <option>Restaurant / Café</option>
-            <option>Fitness / Gym</option>
-            <option>Other</option>
+            <option value="" data-t="f_type_ph">Select your industry</option>
+            <option data-t="f_opt1">Dental Clinic</option>
+            <option data-t="f_opt2">Hair Salon</option>
+            <option data-t="f_opt3">Medical Clinic</option>
+            <option data-t="f_opt4">Restaurant</option>
+            <option data-t="f_opt5">Other Business</option>
           </select>
         </div>
-        <div class="form-group">
-          <label class="form-label">What Do You Need?</label>
-          <textarea class="form-textarea" placeholder="Describe your biggest problem or what you want automated..." required></textarea>
-        </div>
-        <button type="submit" class="form-submit">Send Request →</button>
+        <div><label class="form-label" data-t="f_need">What Do You Need?</label><textarea class="form-textarea" placeholder="Describe your biggest problem or what you want automated..." required></textarea></div>
+        <button type="submit" class="form-submit" data-t="f_submit">Send Request →</button>
       </form>
-
-      <div class="form-success" id="formSuccess">
+      <div class="success-box" id="formSuccess">
         <div style="font-size:48px;margin-bottom:16px">✅</div>
-        <h3>Request Received!</h3>
-        <p style="color:rgba(240,244,255,0.5);margin-top:8px">We'll contact you within 24 hours with your custom plan.</p>
+        <h3 style="font-family:'Syne',sans-serif;font-size:22px;margin-bottom:8px;" data-t="success_title">Request Received!</h3>
+        <p style="color:rgba(240,244,255,0.5);" data-t="success_p">We'll contact you within 24 hours.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer style="flex-direction: column; gap: 24px; text-align: center; padding: 48px 60px;">
-  <div class="footer-logo">SHAH·RAM</div>
-
-  <div style="display: flex; gap: 48px; justify-content: center; flex-wrap: wrap;">
-    <div style="text-align: center;">
-      <div style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,229,255,0.5); margin-bottom: 8px;">Email</div>
-      <a href="mailto:shahramqurbani529@gmail.com" style="color: var(--white); text-decoration: none; font-size: 14px; transition: color 0.3s;" onmouseover="this.style.color='#00e5ff'" onmouseout="this.style.color='#f0f4ff'">shahramqurbani529@gmail.com</a>
-    </div>
-    <div style="text-align: center;">
-      <div style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,229,255,0.5); margin-bottom: 8px;">Location</div>
-      <span style="font-size: 14px;">🇨🇭 Switzerland</span>
-    </div>
-    <div style="text-align: center;">
-      <div style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,229,255,0.5); margin-bottom: 8px;">Response</div>
-      <span style="font-size: 14px;">Within 24 hours</span>
-    </div>
+<footer>
+  <div class="nav-logo" style="font-size:24px;margin-bottom:16px;">TITANBOT</div>
+  <div class="footer-email"><a href="mailto:shahramqurbani529@gmail.com">shahramqurbani529@gmail.com</a></div>
+  <div style="display:flex;justify-content:center;gap:32px;margin-top:16px;font-size:13px;color:rgba(240,244,255,0.3);">
+    <span>🇨🇭 Switzerland</span>
+    <span data-t="footer_response">Response within 24h</span>
+    <span data-t="footer_service">100% Done-For-You</span>
   </div>
-
-  <div style="background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.1); padding: 20px 40px; max-width: 600px; margin: 0 auto;">
-    <div style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;">🌐 Also Available</div>
-    <div style="font-size: 14px; color: rgba(240,244,255,0.6); line-height: 1.7;">
-      Need a <strong style="color: var(--white);">professional website</strong> for your business? We build stunning, modern websites from scratch — fast, beautiful, and fully customized for your brand.
-    </div>
-  </div>
-
-  <div class="footer-copy">© 2026 — SHAH·RAM AI Automation Agency</div>
+  <div class="footer-copy">© 2026 — TITANBOT AI Automation Agency</div>
 </footer>
 
+<!-- CHATBOT -->
+<div class="chat-bubble" onclick="toggleChat()" title="Chat with us">💬</div>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <span class="chat-header-title">🤖 TITANBOT Assistant</span>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg bot" data-t="chat_greeting">👋 Hello! I'm the TITANBOT assistant. How can I help you today?</div>
+  </div>
+  <div class="chat-input-area">
+    <input class="chat-input" id="chatInput" type="text" placeholder="Type your message..." onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
 <script>
-  // Cursor
-  const cursor = document.getElementById('cursor');
-  const follower = document.getElementById('follower');
-  let mx = 0, my = 0, fx = 0, fy = 0;
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx - 6 + 'px';
-    cursor.style.top = my - 6 + 'px';
+// ============ TRANSLATIONS ============
+const T = {
+  en: {
+    nav_services:'Services',nav_process:'Process',nav_usecases:'Use Cases',nav_contact:'Contact',nav_cta:'Get Started',
+    hero_label:'AI Automation Agency — Switzerland',
+    hero_line1:'YOUR BUSINESS.',hero_line2:'AUTOMATED.',hero_line3:'SOLD.',
+    hero_sub:'We build custom AI assistants and automation systems for clinics, salons, and businesses across Switzerland.',
+    hero_btn1:'Start Your Project',hero_btn2:'See What We Build',
+    stat1:'Response Time',stat2:'Done For You',stat3:'Powered By',
+    sec_services_label:'What We Build',sec_services_title:'SERVICES',
+    sec_process_label:'How It Works',sec_process_title:'FROM IDEA\nTO LIVE',
+    sec_uc_label:'Who We Work With',sec_uc_title:'USE CASES',
+    sec_contact_label:'Start Your Project',
+    s1_title:'AI Assistant',s1_desc:'A custom AI assistant that answers questions, books appointments and handles customers 24/7 automatically.',
+    s2_title:'Smart Booking System',s2_desc:'Customers book online. AI confirms automatically, sends reminders — zero manual work for you.',
+    s3_title:'Website Chatbot',s3_desc:'Smart chatbot on your website that answers visitors, captures leads, and books appointments automatically.',
+    s4_title:'Telegram / WhatsApp Bot',s4_desc:'Your customers send a message — the bot handles everything. Questions, bookings, follow-ups.',
+    s5_title:'Social Media AI Manager',s5_desc:'AI creates, schedules and posts content for Instagram, Facebook and LinkedIn — automatically, 24/7.',
+    s6_title:'Auto Invoice & Payment',s6_desc:'Automatically generate and send invoices after every booking. Track payments, send reminders.',
+    s7_title:'Email Automation',s7_desc:'AI reads, sorts and drafts replies to your emails. Never miss a message. Save hours every week.',
+    s8_title:'CRM Automation',s8_desc:'Every customer interaction becomes a tracked task. Auto follow-ups, reminders, and status updates.',
+    s9_title:'Website Design',s9_desc:'Custom websites built from scratch. Modern, fast, mobile-ready. No templates — 100% unique.',
+    p1_title:'Discovery',p1_desc:'We learn about your business, your problems, and your goals. Free consultation.',
+    p2_title:'Design',p2_desc:'We map out the full automation workflow and show you exactly what we will build.',
+    p3_title:'Build',p3_desc:'We implement everything in n8n. You see progress every step of the way.',
+    p4_title:'Launch',p4_desc:'We deploy, train you, and support you ongoing. You are never alone.',
+    uc1_title:'Dental Clinic',uc1_desc:'Automate appointments, reminders, and patient communication.',uc1_f1:'Online booking 24/7',uc1_f2:'Automatic reminders',uc1_f3:'Patient follow-ups',uc1_f4:'Multilingual support',
+    uc2_title:'Hair Salon',uc2_desc:'Let customers book 24/7 — even when you are busy with clients.',uc2_f1:'Service menu booking',uc2_f2:'Stylist selection',uc2_f3:'No-show prevention',uc2_f4:'Auto confirmations',
+    uc3_title:'Small Clinic',uc3_desc:'Streamline patient intake, scheduling and follow-ups automatically.',uc3_f1:'Intake form automation',uc3_f2:'Doctor scheduling',uc3_f3:'Follow-up messages',uc3_f4:'Invoice automation',
+    contact_h3:'Tell us what you need.',contact_p:'Fill in the form and we will get back to you within 24 hours with a plan tailored to your business.',
+    cd1:'Switzerland — Remote Worldwide',cd2:'Response within 24 hours',cd3:'100% Done-For-You Setup',
+    f_name:'Your Name',f_biz:'Business Name',f_contact:'Email / Telegram',f_type:'Business Type',f_type_ph:'Select your industry',
+    f_opt1:'Dental Clinic',f_opt2:'Hair Salon',f_opt3:'Medical Clinic',f_opt4:'Restaurant',f_opt5:'Other Business',
+    f_need:'What Do You Need?',f_submit:'Send Request →',
+    success_title:'Request Received!',success_p:"We'll contact you within 24 hours.",
+    footer_response:'Response within 24h',footer_service:'100% Done-For-You',
+    chat_greeting:'👋 Hello! I am the TITANBOT assistant. How can I help you today?'
+  },
+  de: {
+    nav_services:'Leistungen',nav_process:'Ablauf',nav_usecases:'Anwendungen',nav_contact:'Kontakt',nav_cta:'Jetzt starten',
+    hero_label:'KI-Automatisierungsagentur — Schweiz',
+    hero_line1:'IHR BUSINESS.',hero_line2:'AUTOMATISIERT.',hero_line3:'VERKAUFT.',
+    hero_sub:'Wir entwickeln KI-Assistenten und Automatisierungssysteme für Kliniken, Salons und Unternehmen in der Schweiz.',
+    hero_btn1:'Projekt starten',hero_btn2:'Was wir bauen',
+    stat1:'Antwortzeit',stat2:'Alles inklusive',stat3:'Betrieben von',
+    sec_services_label:'Was wir bauen',sec_services_title:'LEISTUNGEN',
+    sec_process_label:'Wie es funktioniert',sec_process_title:'VON DER IDEE\nZUM BETRIEB',
+    sec_uc_label:'Mit wem wir arbeiten',sec_uc_title:'ANWENDUNGEN',
+    sec_contact_label:'Projekt starten',
+    s1_title:'KI-Assistent',s1_desc:'Ein individueller KI-Assistent der Fragen beantwortet, Termine bucht und Kunden rund um die Uhr betreut.',
+    s2_title:'Buchungssystem',s2_desc:'Kunden buchen online. KI bestätigt automatisch und sendet Erinnerungen — kein manueller Aufwand.',
+    s3_title:'Website-Chatbot',s3_desc:'Intelligenter Chatbot auf Ihrer Website — beantwortet Fragen und erfasst Leads automatisch.',
+    s4_title:'Telegram / WhatsApp Bot',s4_desc:'Kunden schreiben eine Nachricht — der Bot erledigt alles. Fragen, Buchungen, Follow-ups.',
+    s5_title:'Social Media Manager',s5_desc:'KI erstellt, plant und veröffentlicht Inhalte für Instagram, Facebook und LinkedIn — automatisch.',
+    s6_title:'Automatische Rechnungen',s6_desc:'Rechnungen werden nach jeder Buchung automatisch erstellt und versendet.',
+    s7_title:'E-Mail-Automatisierung',s7_desc:'KI liest, sortiert und beantwortet Ihre E-Mails. Verpassen Sie nie eine wichtige Nachricht.',
+    s8_title:'CRM-Automatisierung',s8_desc:'Jede Kundeninteraktion wird automatisch erfasst. Auto-Follow-ups und Statusupdates.',
+    s9_title:'Website-Design',s9_desc:'Individuelle Websites von Grund auf entwickelt. Modern, schnell, mobilfreundlich.',
+    p1_title:'Analyse',p1_desc:'Wir lernen Ihr Unternehmen kennen. Kostenlose Erstberatung.',
+    p2_title:'Konzept',p2_desc:'Wir erstellen den Automatisierungsplan und zeigen Ihnen genau, was wir bauen.',
+    p3_title:'Umsetzung',p3_desc:'Wir implementieren alles in n8n. Sie sehen jeden Fortschritt.',
+    p4_title:'Launch',p4_desc:'Wir deployen, schulen Sie und unterstützen Sie laufend.',
+    uc1_title:'Zahnarztpraxis',uc1_desc:'Termine, Erinnerungen und Patientenkommunikation automatisieren.',uc1_f1:'Online-Buchung 24/7',uc1_f2:'Automatische Erinnerungen',uc1_f3:'Patienten-Follow-ups',uc1_f4:'Mehrsprachig',
+    uc2_title:'Friseursalon',uc2_desc:'Kunden buchen rund um die Uhr — auch wenn Sie gerade beschäftigt sind.',uc2_f1:'Servicemenü-Buchung',uc2_f2:'Friseurauswahl',uc2_f3:'No-Show-Prävention',uc2_f4:'Auto-Bestätigung',
+    uc3_title:'Kleine Klinik',uc3_desc:'Patientenaufnahme, Terminplanung und Follow-ups automatisieren.',uc3_f1:'Aufnahmeformular',uc3_f2:'Arztterminplanung',uc3_f3:'Follow-up-Nachrichten',uc3_f4:'Rechnungsautomatisierung',
+    contact_h3:'Sagen Sie uns, was Sie brauchen.',contact_p:'Füllen Sie das Formular aus — wir melden uns innerhalb von 24 Stunden mit einem individuellen Plan.',
+    cd1:'Schweiz — weltweit remote',cd2:'Antwort innerhalb von 24 Stunden',cd3:'100% Rundum-Service',
+    f_name:'Ihr Name',f_biz:'Unternehmensname',f_contact:'E-Mail / Telegram',f_type:'Unternehmensart',f_type_ph:'Branche wählen',
+    f_opt1:'Zahnarztpraxis',f_opt2:'Friseursalon',f_opt3:'Klinik',f_opt4:'Restaurant',f_opt5:'Anderes',
+    f_need:'Was benötigen Sie?',f_submit:'Anfrage senden →',
+    success_title:'Anfrage erhalten!',success_p:'Wir melden uns innerhalb von 24 Stunden.',
+    footer_response:'Antwort innerhalb 24h',footer_service:'100% Rundum-Service',
+    chat_greeting:'👋 Hallo! Ich bin der TITANBOT-Assistent. Wie kann ich Ihnen helfen?'
+  },
+  fa: {
+    nav_services:'خدمات',nav_process:'فرآیند',nav_usecases:'موارد استفاده',nav_contact:'تماس',nav_cta:'شروع کنید',
+    hero_label:'آژانس هوش مصنوعی — سوئیس',
+    hero_line1:'کسب‌وکار شما.',hero_line2:'خودکار شده.',hero_line3:'به فروش می‌رسد.',
+    hero_sub:'ما دستیارهای هوش مصنوعی و سیستم‌های اتوماسیون برای کلینیک‌ها، سالن‌های آرایشی و کسب‌وکارهای سوئیس می‌سازیم.',
+    hero_btn1:'شروع پروژه',hero_btn2:'خدمات ما',
+    stat1:'زمان پاسخ',stat2:'کاملاً برای شما',stat3:'با استفاده از',
+    sec_services_label:'چه می‌سازیم',sec_services_title:'خدمات',
+    sec_process_label:'چطور کار می‌کند',sec_process_title:'از ایده\nتا اجرا',
+    sec_uc_label:'با چه کسانی کار می‌کنیم',sec_uc_title:'موارد استفاده',
+    sec_contact_label:'پروژه را شروع کنید',
+    s1_title:'دستیار هوش مصنوعی',s1_desc:'دستیار اختصاصی که ۲۴ ساعته به سوالات پاسخ می‌دهد، نوبت می‌گیرد و مشتریان را مدیریت می‌کند.',
+    s2_title:'سیستم رزرو هوشمند',s2_desc:'مشتریان آنلاین رزرو می‌کنند. هوش مصنوعی تأیید می‌فرستد و یادآوری می‌دهد — بدون کار دستی.',
+    s3_title:'چت‌بات وب‌سایت',s3_desc:'چت‌بات هوشمند روی وب‌سایت که به بازدیدکنندگان پاسخ می‌دهد و مشتری جذب می‌کند.',
+    s4_title:'ربات تلگرام / واتساپ',s4_desc:'مشتری پیام می‌فرستد — ربات همه چیز را مدیریت می‌کند. سوالات، رزرو، پیگیری.',
+    s5_title:'مدیریت شبکه‌های اجتماعی',s5_desc:'هوش مصنوعی محتوا می‌سازد، برنامه‌ریزی می‌کند و در اینستاگرام و فیسبوک پست می‌دهد.',
+    s6_title:'صورت‌حساب خودکار',s6_desc:'بعد از هر رزرو، فاکتور PDF به‌طور خودکار ساخته و فرستاده می‌شود.',
+    s7_title:'اتوماسیون ایمیل',s7_desc:'هوش مصنوعی ایمیل‌ها را می‌خواند، دسته‌بندی می‌کند و پاسخ پیش‌نویس می‌کند.',
+    s8_title:'اتوماسیون CRM',s8_desc:'هر تعامل با مشتری به یک وظیفه تبدیل می‌شود. پیگیری خودکار و به‌روزرسانی وضعیت.',
+    s9_title:'طراحی وب‌سایت',s9_desc:'وب‌سایت‌های اختصاصی از صفر. مدرن، سریع، موبایل‌پسند. ۱۰۰٪ منحصربه‌فرد.',
+    p1_title:'کشف',p1_desc:'درباره کسب‌وکار، مشکلات و اهداف شما یاد می‌گیریم. مشاوره رایگان.',
+    p2_title:'طراحی',p2_desc:'فلوی کامل اتوماسیون را طراحی می‌کنیم و دقیقاً نشان می‌دهیم چه می‌سازیم.',
+    p3_title:'ساخت',p3_desc:'همه چیز را در n8n پیاده‌سازی می‌کنیم. در هر مرحله پیشرفت را می‌بینید.',
+    p4_title:'راه‌اندازی',p4_desc:'راه‌اندازی می‌کنیم، آموزش می‌دهیم و پشتیبانی ادامه‌دار ارائه می‌دهیم.',
+    uc1_title:'کلینیک دندانپزشکی',uc1_desc:'نوبت‌دهی، یادآوری و ارتباط با بیماران را خودکار کنید.',uc1_f1:'رزرو آنلاین ۲۴/۷',uc1_f2:'یادآوری خودکار',uc1_f3:'پیگیری بیماران',uc1_f4:'پشتیبانی چندزبانه',
+    uc2_title:'سالن آرایشی',uc2_desc:'مشتریان ۲۴ ساعته رزرو کنند — حتی وقتی مشغول هستید.',uc2_f1:'منوی خدمات',uc2_f2:'انتخاب آرایشگر',uc2_f3:'جلوگیری از غیبت',uc2_f4:'تأییدیه خودکار',
+    uc3_title:'کلینیک کوچک',uc3_desc:'پذیرش، برنامه‌ریزی و پیگیری بیماران را خودکار کنید.',uc3_f1:'فرم پذیرش خودکار',uc3_f2:'برنامه‌ریزی پزشک',uc3_f3:'پیام پیگیری',uc3_f4:'فاکتور خودکار',
+    contact_h3:'بگویید چه نیاز دارید.',contact_p:'فرم را پر کنید — ظرف ۲۴ ساعت با برنامه‌ای متناسب با کسب‌وکار شما تماس می‌گیریم.',
+    cd1:'سوئیس — خدمات از راه دور',cd2:'پاسخ ظرف ۲۴ ساعت',cd3:'کاملاً برای شما انجام می‌شود',
+    f_name:'نام شما',f_biz:'نام کسب‌وکار',f_contact:'ایمیل / تلگرام',f_type:'نوع کسب‌وکار',f_type_ph:'صنعت را انتخاب کنید',
+    f_opt1:'کلینیک دندانپزشکی',f_opt2:'سالن آرایشی',f_opt3:'کلینیک پزشکی',f_opt4:'رستوران',f_opt5:'سایر',
+    f_need:'چه نیاز دارید؟',f_submit:'ارسال درخواست →',
+    success_title:'درخواست دریافت شد!',success_p:'ظرف ۲۴ ساعت با شما تماس می‌گیریم.',
+    footer_response:'پاسخ ظرف ۲۴ ساعت',footer_service:'کاملاً برای شما',
+    chat_greeting:'👋 سلام! من دستیار TITANBOT هستم. چطور می‌توانم کمک کنم؟'
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = T[lang];
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (t[key] !== undefined) el.textContent = t[key];
   });
-  function animateFollower() {
-    fx += (mx - fx - 18) * 0.12;
-    fy += (my - fy - 18) * 0.12;
-    follower.style.left = fx + 'px';
-    follower.style.top = fy + 'px';
-    requestAnimationFrame(animateFollower);
-  }
-  animateFollower();
+  document.body.style.direction = lang === 'fa' ? 'rtl' : 'ltr';
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  const activeLang = ['en','de','fa'].indexOf(lang);
+  document.querySelectorAll('.lang-btn')[activeLang]?.classList.add('active');
+  // Update chat greeting
+  const msgs = document.getElementById('chatMessages');
+  if (msgs && msgs.firstChild) msgs.firstChild.textContent = t.chat_greeting || '';
+}
 
-  // Scroll reveal
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Form submit
-  function submitForm(e) {
-    e.preventDefault();
-    document.getElementById('contactForm').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
+// ============ CHATBOT ============
+const chatResponses = {
+  en: {
+    booking: "Great! We can build a fully automated booking system for your business. Customers book via Telegram, WhatsApp or your website — and it all syncs to your calendar automatically. Want to tell me more about your business?",
+    price: "Our pricing depends on the project size. A basic automation starts from CHF 200/month. A full booking system with AI is CHF 300–500/month. Would you like a free consultation?",
+    website: "Yes! We design custom websites from scratch — modern, fast, and mobile-ready. No templates. Starting from CHF 500 one-time. Want to see examples?",
+    contact: "You can reach Shahram directly at shahramqurbani529@gmail.com or fill out the contact form on this page. Response within 24 hours!",
+    whatsapp: "Yes, we build WhatsApp and Telegram bots. Customers message your bot — it handles bookings, answers FAQs, and sends reminders automatically.",
+    default: "That's a great question! Our AI systems can handle that. Could you tell me more about your business? What's the main challenge you want to solve?"
+  },
+  de: {
+    booking: "Super! Wir können ein vollautomatisches Buchungssystem für Ihr Unternehmen entwickeln. Kunden buchen per Telegram, WhatsApp oder über Ihre Website — alles synchronisiert automatisch mit Ihrem Kalender.",
+    price: "Unsere Preise hängen vom Projektumfang ab. Eine einfache Automatisierung beginnt ab CHF 200/Monat. Ein vollständiges Buchungssystem mit KI kostet CHF 300–500/Monat.",
+    website: "Ja! Wir erstellen individuelle Websites von Grund auf — modern, schnell und mobilfreundlich. Ab CHF 500 einmalig.",
+    contact: "Sie können Shahram direkt unter shahramqurbani529@gmail.com erreichen oder das Kontaktformular auf dieser Seite ausfüllen.",
+    default: "Gute Frage! Unsere KI-Systeme können das lösen. Erzählen Sie mir mehr über Ihr Unternehmen?"
+  },
+  fa: {
+    booking: "عالیه! ما می‌توانیم یک سیستم رزرو کاملاً خودکار برای کسب‌وکار شما بسازیم. مشتریان از طریق تلگرام، واتساپ یا وب‌سایت رزرو می‌کنند — همه چیز با تقویم شما همگام‌سازی می‌شود.",
+    price: "قیمت ما بستگی به حجم پروژه دارد. یک اتوماسیون ساده از CHF 200 در ماه شروع می‌شود. سیستم رزرو کامل با هوش مصنوعی CHF 300-500 در ماه است.",
+    website: "بله! ما وب‌سایت‌های اختصاصی از صفر طراحی می‌کنیم — مدرن، سریع و موبایل‌پسند. از CHF 500 یکبار.",
+    contact: "می‌توانید مستقیماً با شهرام از طریق shahramqurbani529@gmail.com تماس بگیرید یا فرم تماس را پر کنید.",
+    default: "سوال خوبیه! سیستم‌های هوش مصنوعی ما می‌توانند این مشکل را حل کنند. می‌توانید بیشتر درباره کسب‌وکار خود بگویید؟"
   }
+};
+
+function toggleChat() {
+  const w = document.getElementById('chatWindow');
+  w.classList.toggle('open');
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  addMsg(msg, 'user');
+  setTimeout(() => {
+    addMsg('...', 'bot', true);
+    setTimeout(() => {
+      removeTyping();
+      const reply = getReply(msg.toLowerCase());
+      addMsg(reply, 'bot');
+    }, 1000);
+  }, 200);
+}
+
+function addMsg(text, type, typing = false) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + type + (typing ? ' typing-indicator' : '');
+  if (typing) {
+    div.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  } else {
+    div.textContent = text;
+  }
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.querySelector('.typing-indicator');
+  if (t) t.remove();
+}
+
+function getReply(msg) {
+  const lang = currentLang;
+  const r = chatResponses[lang] || chatResponses.en;
+  if (msg.includes('book') || msg.includes('reserv') || msg.includes('terminl') || msg.includes('رزرو') || msg.includes('nwbt') || msg.includes('buchen') || msg.includes('buchung')) return r.booking;
+  if (msg.includes('price') || msg.includes('cost') || msg.includes('chf') || msg.includes('preis') || msg.includes('قیمت') || msg.includes('هزینه')) return r.price;
+  if (msg.includes('website') || msg.includes('webseite') || msg.includes('وب‌سایت') || msg.includes('سایت')) return r.website;
+  if (msg.includes('contact') || msg.includes('email') || msg.includes('kontakt') || msg.includes('تماس') || msg.includes('ایمیل')) return r.contact;
+  if (msg.includes('whatsapp') || msg.includes('telegram') || msg.includes('bot') || msg.includes('ربات')) return r.whatsapp || r.default;
+  return r.default;
+}
+
+// ============ NEURAL NETWORK CANVAS ============
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes;
+
+  function init() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    nodes = Array.from({length: 50}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+      r: Math.random() * 2 + 1
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 130) {
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(0,229,255,${(1-d/130)*0.35})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = '#00e5ff';
+      ctx.shadowColor = '#00e5ff';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+    requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+  window.addEventListener('resize', init);
+})();
+
+// ============ CURSOR ============
+const cursor = document.getElementById('cursor');
+const follower = document.getElementById('follower');
+let mx=0,my=0,fx=0,fy=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx-6+'px'; cursor.style.top=my-6+'px';
+});
+(function anim(){
+  fx+=(mx-fx-18)*0.12; fy+=(my-fy-18)*0.12;
+  follower.style.left=fx+'px'; follower.style.top=fy+'px';
+  requestAnimationFrame(anim);
+})();
+
+// ============ SCROLL REVEAL ============
+const obs = new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ============ FORM ============
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('contactForm').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
 </script>
 </body>
 </html>
